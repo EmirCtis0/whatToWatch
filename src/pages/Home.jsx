@@ -17,20 +17,21 @@ function Home({ favourites, addToFavourites, removeFromFavourites, isFavourite }
 
   return (
     <main className="p-6 bg-gray-900 min-h-screen text-white">
-      <button 
-        onClick={handleRandom} 
-        className="mb-6 px-6 py-2 bg-blue-500 rounded-lg hover:bg-blue-600 transition"
-      >
-        Random Movie Suggestion
-      </button>
-
+      <div className="flex flex-col items-center mb-6 min-h-[80px]">
+        
+        <button 
+          onClick={handleRandom} 
+          className="px-6 bg-blue-500 rounded-lg hover:bg-blue-600 transition"
+        >
+          Random Movie Suggestion
+        </button>
+      </div>
       {randomMovie && (
         <div className="mb-6 p-4 bg-gray-800 rounded-xl shadow-lg">
           <h2 className="text-xl font-bold">{randomMovie.title}</h2>
           <p>{randomMovie.year}</p>
         </div>
       )}
-
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
         {movies.map(movie => (
           <MovieCard
