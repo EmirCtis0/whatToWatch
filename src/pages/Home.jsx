@@ -1,14 +1,38 @@
 import MovieCard from "../components/MovieCard"
 import { useState } from "react"
+import { useNavigate } from "react-router-dom";
 
 function Home({ favourites, addToFavourites, removeFromFavourites, isFavourite }) {
-  const movies = [
-    { id: 1, title: "The Dark Knight", year: 2008, poster: "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg" },
-    { id: 2, title: "Interstellar", year: 2014, poster: "https://image.tmdb.org/t/p/w500/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg" },
-    { id: 3, title: "Tenet", year: 2020, poster: "https://image.tmdb.org/t/p/w500/k68nPLbIST6NP96JmTxmZijEvCA.jpg" },
-  ]
+// Home.jsx
+const movies = [
+  {
+    id: 1,
+    title: "The Dark Knight",
+    year: 2008,
+    poster: "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
+    rating: 9.0,
+    description: "Batman raises the stakes in his war on crime. With the help of Lt. Jim Gordon and District Attorney Harvey Dent, Batman sets out to dismantle the remaining criminal organizations that plague the streets."
+  },
+  {
+    id: 2,
+    title: "Interstellar",
+    year: 2014,
+    poster: "https://image.tmdb.org/t/p/w500/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg",
+    rating: 8.7,
+    description: "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival."
+  },
+  {
+    id: 3,
+    title: "Tenet",
+    year: 2020,
+    poster: "https://image.tmdb.org/t/p/w500/k68nPLbIST6NP96JmTxmZijEvCA.jpg",
+    rating: 7.4,
+    description: "Armed with only one word, Tenet, and fighting for the survival of the entire world, a Protagonist journeys through a twilight world of international espionage on a mission that will unfold in something beyond real time."
+  }
+]
 
   const [randomMovie, setRandomMovie] = useState(null)
+  const navigate = useNavigate();
 
   const handleRandom = () => {
     const movie = movies[Math.floor(Math.random() * movies.length)]
@@ -40,6 +64,7 @@ function Home({ favourites, addToFavourites, removeFromFavourites, isFavourite }
             isFavourite={isFavourite}
             addToFavourites={addToFavourites}
             removeFromFavourites={removeFromFavourites}
+            onClick={() => navigate(`/movie/${movie.id}`)}
           />
         ))}
       </div>

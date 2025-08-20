@@ -1,3 +1,4 @@
+// MovieCard.jsx
 import { Star, Heart, X } from 'lucide-react';
 
 function MovieCard({
@@ -5,12 +6,22 @@ function MovieCard({
   isFavourite,
   addToFavourites,
   removeFromFavourites,
-  showRemoveButton
+  showRemoveButton,
+  onClick  // Yeni prop!
 }) {
   const liked = isFavourite ? isFavourite(movie.id) : false;
 
+  const handleCardClick = () => {
+    if (onClick) {
+      onClick(movie);
+    }
+  };
+
   return (
-    <div className="bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:scale-105 transform transition duration-300">
+    <div 
+      className="bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:scale-105 transform transition duration-300 cursor-pointer"
+      onClick={handleCardClick}  // Karta tıklama
+    >
       <div className="relative">
         <img 
           src={movie.poster} 
@@ -26,10 +37,13 @@ function MovieCard({
           </span>
         </div>
 
-        {/* Favori Butonu */}
+        {/* Favori/Remove Butonları - Event propagation durduralım */}
         {!showRemoveButton && (
           <button 
-            onClick={() => liked ? removeFromFavourites(movie.id) : addToFavourites(movie)}
+            onClick={(e) => {
+              e.stopPropagation(); // Kart tıklama olayını durdur
+              liked ? removeFromFavourites(movie.id) : addToFavourites(movie);
+            }}
             className="absolute top-2 left-2 p-2 bg-black bg-opacity-50 rounded-full hover:bg-opacity-70 transition"
           >
             <Heart 
@@ -38,10 +52,12 @@ function MovieCard({
           </button>
         )}
 
-        {/* Favorilerde Kaldırma Butonu */}
         {showRemoveButton && (
           <button
-            onClick={() => removeFromFavourites(movie.id)}
+            onClick={(e) => {
+              e.stopPropagation(); // Kart tıklama olayını durdur
+              removeFromFavourites(movie.id);
+            }}
             className="absolute top-2 left-2 p-2 bg-black bg-opacity-50 rounded-full hover:bg-opacity-70 transition"
             title="Remove from favourites"
           >
