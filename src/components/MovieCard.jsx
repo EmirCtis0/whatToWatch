@@ -23,10 +23,10 @@ function MovieCard({
       onClick={handleCardClick}  // Karta tıklama
     >
       <div className="relative">
-        <img 
+              <img 
           src={movie.poster} 
           alt={movie.title} 
-          className="w-full h-64 object-cover"
+          className="w-full h-128 object-cover rounded-t-xl"
         />
         
         {/* Rating Badge */}

@@ -3,23 +3,23 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Star, Heart } from 'lucide-react';
 
 function MovieDetails({ movies, isFavourite, addToFavourites, removeFromFavourites }) {
-  const { id } = useParams(); // URL'den film ID'sini al
-  const navigate = useNavigate(); // Geri gitme için
+  const { id } = useParams(); // Get movie ID from URL
+  const navigate = useNavigate(); // For navigation back
 
-  // Film ID'si ile filmi bul
+  // Find movie by ID
   const movie = movies.find(m => m.id === parseInt(id));
 
-  // Film bulunamazsa
+  // If movie is not found
   if (!movie) {
     return (
       <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">Film Bulunamadı</h1>
+          <h1 className="text-2xl font-bold mb-4">Movie Not Found</h1>
           <button 
             onClick={() => navigate('/')}
             className="px-4 py-2 bg-blue-500 rounded-lg hover:bg-blue-600 transition"
           >
-            Ana Sayfaya Dön
+            Return to Home
           </button>
         </div>
       </div>
@@ -30,38 +30,38 @@ function MovieDetails({ movies, isFavourite, addToFavourites, removeFromFavourit
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
-      {/* Geri Dönme Butonu */}
+      {/* Back Button */}
       <div className="p-6">
         <button
-          onClick={() => navigate(-1)} // Bir önceki sayfaya dön
+          onClick={() => navigate(-1)} // Go back to previous page
           className="flex items-center text-gray-300 hover:text-white transition mb-6"
         >
           <ArrowLeft className="w-5 h-5 mr-2" />
-          Geri Dön
+          Go Back
         </button>
       </div>
 
-      {/* Film Detayları */}
+      {/* Movie Details */}
       <div className="max-w-6xl mx-auto px-6 pb-12">
         <div className="grid md:grid-cols-3 gap-8">
-          {/* Film Posteri */}
+          {/* Movie Poster */}
           <div className="md:col-span-1">
-            <img
-              src={movie.poster}
-              alt={movie.title}
-              className="w-full max-w-md mx-auto rounded-xl shadow-2xl"
-            />
+           <img
+  src={movie.poster}
+  alt={movie.title}
+  className="w-full max-w-md h-128 object-cover rounded-xl mx-auto mb-6"
+/>
           </div>
 
-          {/* Film Bilgileri */}
+          {/* Movie Information */}
           <div className="md:col-span-2 space-y-6">
-            {/* Başlık ve Yıl */}
+            {/* Title and Year */}
             <div>
               <h1 className="text-4xl font-bold mb-2">{movie.title}</h1>
               <p className="text-gray-400 text-xl">{movie.year}</p>
             </div>
 
-            {/* Rating ve Favori Butonu */}
+            {/* Rating and Favorite Button */}
             <div className="flex items-center space-x-6">
               <div className="flex items-center bg-gray-800 rounded-full px-4 py-2">
                 <Star className="w-6 h-6 text-yellow-400 mr-2" fill="currentColor" />
@@ -79,13 +79,13 @@ function MovieDetails({ movies, isFavourite, addToFavourites, removeFromFavourit
                 <Heart 
                   className={`w-5 h-5 mr-2 ${liked ? 'fill-current' : ''}`} 
                 />
-                {liked ? 'Favorilerden Çıkar' : 'Favorilere Ekle'}
+                {liked ? 'Remove from Favorites' : 'Add to Favorites'}
               </button>
             </div>
 
-            {/* Açıklama */}
+            {/* Description */}
             <div>
-              <h2 className="text-2xl font-semibold mb-4">Konu</h2>
+              <h2 className="text-2xl font-semibold mb-4">Plot</h2>
               <p className="text-gray-300 text-lg leading-relaxed">
                 {movie.description}
               </p>

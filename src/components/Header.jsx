@@ -24,6 +24,9 @@ const Header = () => {
             <Link to="/favourites" className="text-gray-300 hover:text-red-400 transition-colors font-medium">
               My Favourites
             </Link>
+            <Link to="" className="text-gray-300 hover:text-red-400 transition-colors font-medium">
+              Randomizer
+            </Link>
           </nav>
 
           {/* Search Bar */}
