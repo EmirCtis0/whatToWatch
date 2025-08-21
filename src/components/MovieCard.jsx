@@ -33,7 +33,7 @@ function MovieCard({
         <div className="absolute top-2 right-2 bg-black bg-opacity-70 rounded-full px-2 py-1 flex items-center">
           <Star className="w-4 h-4 text-yellow-400 mr-1" fill="currentColor" />
           <span className="text-white text-sm font-semibold">
-            {movie.rating || '8.5'}
+            {movie.rating?.toFixed(1) || '8.5'}
           </span>
         </div>
 

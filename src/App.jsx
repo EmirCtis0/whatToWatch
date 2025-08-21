@@ -1,30 +1,37 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { SWRConfig } from 'swr';
 import Header from './components/Header';
 import Home from './pages/Home';
 import Favourites from './pages/Favourites';
 import MovieDetails from './pages/MovieDetails';
-import { getPopularMovies } from './api/movieApi';
+import { usePopularMovies } from './api/movieApi';
 
-function App() {
+// SWR konfigürasyonu
+const swrConfig = {
+  revalidateOnFocus: false,
+  revalidateOnReconnect: true,
+  dedupingInterval: 60000, // 1 dakika
+  errorRetryCount: 3,
+  errorRetryInterval: 5000, // 5 saniye
+  onError: (error) => {
+    console.error('SWR Error:', error);
+  },
+};
+
+// Ana uygulama bileşeni
+function AppContent() {
   const [favourites, setFavourites] = useState([]);
-  const [movies, setMovies] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    getPopularMovies()
-      .then((data) => {
-        setMovies(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("API error:", err);
-        setLoading(false);
-      });
-  }, []);
+  const { movies, isLoading, error } = usePopularMovies();
 
   const addToFavourites = (movie) => {
-    setFavourites((prev) => [...prev, movie]);
+    setFavourites((prev) => {
+      // Zaten favorilerde mi kontrol et
+      if (prev.some(fav => fav.id === movie.id)) {
+        return prev;
+      }
+      return [...prev, movie];
+    });
   };
 
   const removeFromFavourites = (movieId) => {
@@ -35,53 +42,84 @@ function App() {
     return favourites.some((movie) => movie.id === movieId);
   };
 
-  return (
-    <Router>
-      <div className="min-h-screen bg-gray-900">
-        <Header />
-        <main>
-          {loading ? (
-            <div className="text-center text-white p-10">Loading...</div>
-          ) : (
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  <Home
-                    movies={movies}
-                    favourites={favourites}
-                    addToFavourites={addToFavourites}
-                    removeFromFavourites={removeFromFavourites}
-                    isFavourite={isFavourite}
-                  />
-                }
-              />
-              <Route
-                path="/favourites"
-                element={
-                  <Favourites
-                    favourites={favourites}
-                    removeFromFavourites={removeFromFavourites}
-                    isFavourite={isFavourite}
-                  />
-                }
-              />
-              <Route
-                path="/movie/:id"
-                element={
-                  <MovieDetails
-                    movies={movies}
-                    isFavourite={isFavourite}
-                    addToFavourites={addToFavourites}
-                    removeFromFavourites={removeFromFavourites}
-                  />
-                }
-              />
-            </Routes>
-          )}
-        </main>
+  // Error handling
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+        <div className="text-center text-white">
+          <h2 className="text-xl font-bold mb-2">An Error Occured</h2>
+          <p className="text-gray-300">{error.message}</p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          >
+            Retry
+          </button>
+        </div>
       </div>
-    </Router>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-900">
+      <Header />
+      <main>
+        {isLoading ? (
+          <div className="flex items-center justify-center min-h-[60vh]">
+            <div className="text-center text-white">
+              <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-white mb-4"></div>
+              <p>Loading Movies...</p>
+            </div>
+          </div>
+        ) : (
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <Home
+                  movies={movies}
+                  favourites={favourites}
+                  addToFavourites={addToFavourites}
+                  removeFromFavourites={removeFromFavourites}
+                  isFavourite={isFavourite}
+                />
+              }
+            />
+            <Route
+              path="/favourites"
+              element={
+                <Favourites
+                  favourites={favourites}
+                  removeFromFavourites={removeFromFavourites}
+                  isFavourite={isFavourite}
+                />
+              }
+            />
+            <Route
+              path="/movie/:id"
+              element={
+                <MovieDetails
+                  movies={movies}
+                  isFavourite={isFavourite}
+                  addToFavourites={addToFavourites}
+                  removeFromFavourites={removeFromFavourites}
+                />
+              }
+            />
+          </Routes>
+        )}
+      </main>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <SWRConfig value={swrConfig}>
+      <Router>
+        <AppContent />
+      </Router>
+    </SWRConfig>
   );
 }
 
