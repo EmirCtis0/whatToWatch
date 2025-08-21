@@ -63,18 +63,20 @@ const Header = () => {
         {isMenuOpen && (
           <div className="md:hidden border-t border-gray-800">
             <div className="px-2 pt-2 pb-3 space-y-1">
-              <a
-                href="/"
+              <Link
+                to="/"
                 className="block px-3 py-2 text-white hover:text-red-400 transition-colors font-medium"
+                onClick={() => setIsMenuOpen(false)}
               >
                 Main Page
-              </a>
-              <a
-                href="/favourites"
+              </Link>
+              <Link
+                to="/favourites"
                 className="block px-3 py-2 text-gray-300 hover:text-red-400 transition-colors font-medium"
+                onClick={() => setIsMenuOpen(false)}
               >
                 My Favourites
-              </a>
+              </Link>
               <div className="px-3 py-2">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
