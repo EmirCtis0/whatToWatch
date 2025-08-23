@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { SWRConfig } from 'swr';
 import Header from './components/Header';
 import Home from './pages/Home';
+import Randomizer from './pages/Randomizer';
 import Favourites from './pages/Favourites';
 import MovieDetails from './pages/MovieDetails';
 import { usePopularMovies } from './api/movieApi';
@@ -22,6 +23,7 @@ const swrConfig = {
 // Ana uygulama bileşeni
 function AppContent() {
   const [favourites, setFavourites] = useState([]);
+  const [searchQuery, setSearchQuery] = useState(''); // Search state'ini App.jsx'e taşıdık
   const { movies, isLoading, error } = usePopularMovies();
 
   const addToFavourites = (movie) => {
@@ -40,6 +42,17 @@ function AppContent() {
 
   const isFavourite = (movieId) => {
     return favourites.some((movie) => movie.id === movieId);
+  };
+
+  // Search fonksiyonu - movies'i filtrele
+  const getFilteredMovies = () => {
+    if (!searchQuery.trim()) {
+      return movies;
+    }
+    
+    return movies.filter(movie =>
+      movie.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
   };
 
   // Error handling
@@ -62,7 +75,10 @@ function AppContent() {
 
   return (
     <div className="min-h-screen bg-gray-900">
-      <Header />
+      <Header 
+        searchQuery={searchQuery} 
+        setSearchQuery={setSearchQuery} 
+      />
       <main>
         {isLoading ? (
           <div className="flex items-center justify-center min-h-[60vh]">
@@ -77,11 +93,25 @@ function AppContent() {
               path="/"
               element={
                 <Home
-                  movies={movies}
+                  movies={getFilteredMovies()} // Filtrelenmiş movieler
                   favourites={favourites}
                   addToFavourites={addToFavourites}
                   removeFromFavourites={removeFromFavourites}
                   isFavourite={isFavourite}
+                  searchQuery={searchQuery} // Search query'yi Home'a geç
+                />
+              }
+            />
+            <Route
+              path="/randomizer"
+              element={
+                <Randomizer
+                  movies={getFilteredMovies()} // Filtrelenmiş movieler
+                  favourites={favourites}
+                  addToFavourites={addToFavourites}
+                  removeFromFavourites={removeFromFavourites}
+                  isFavourite={isFavourite}
+                  searchQuery={searchQuery}
                 />
               }
             />
@@ -95,6 +125,7 @@ function AppContent() {
                 />
               }
             />
+            
             <Route
               path="/movie/:id"
               element={

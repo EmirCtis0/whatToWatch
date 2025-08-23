@@ -1,11 +1,9 @@
 import { Link } from 'react-router-dom';
-
 import { useState } from 'react';
 import { Search, Menu, X } from 'lucide-react';
 
-const Header = () => {
+const Header = ({ searchQuery, setSearchQuery }) => { // Props olarak al
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
 
   return (
     <header className="bg-black/90 backdrop-blur-md border-b border-gray-800 sticky top-0 z-50">
@@ -24,7 +22,7 @@ const Header = () => {
             <Link to="/favourites" className="text-gray-300 hover:text-red-400 transition-colors font-medium">
               My Favourites
             </Link>
-            <Link to="" className="text-gray-300 hover:text-red-400 transition-colors font-medium">
+            <Link to="/randomizer" className="text-gray-300 hover:text-red-400 transition-colors font-medium">
               Randomizer
             </Link>
           </nav>
@@ -36,7 +34,7 @@ const Header = () => {
               <input
                 type="text"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => setSearchQuery(e.target.value)} // Parent'tan gelen setSearchQuery kullan
                 placeholder="Search For a Movie..."
                 className="w-full bg-gray-900 border border-gray-700 rounded-full py-2 pl-10 pr-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
               />
@@ -83,7 +81,7 @@ const Header = () => {
                   <input
                     type="text"
                     value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onChange={(e) => setSearchQuery(e.target.value)} // Mobil search de aynı fonksiyonu kullan
                     placeholder="Search For a Movie..."
                     className="w-full bg-gray-900 border border-gray-700 rounded-full py-2 pl-10 pr-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500"
                   />
