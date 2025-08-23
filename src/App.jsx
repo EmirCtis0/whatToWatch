@@ -122,6 +122,7 @@ function AppContent() {
                   favourites={favourites}
                   removeFromFavourites={removeFromFavourites}
                   isFavourite={isFavourite}
+                  searchQuery={searchQuery}
                 />
               }
             />
