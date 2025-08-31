@@ -75,6 +75,13 @@ const Header = ({ searchQuery, setSearchQuery }) => { // Props olarak al
               >
                 My Favourites
               </Link>
+              <Link
+                to="/randomizer"
+                className="block px-3 py-2 text-gray-300 hover:text-red-400 transition-colors font-medium"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Randomizer
+              </Link>
               <div className="px-3 py-2">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
