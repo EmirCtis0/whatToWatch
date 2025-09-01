@@ -1,9 +1,10 @@
 // src/pages/MovieDetails.jsx
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useMovieDetails } from '../api/movieApi';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ErrorMessage from '../components/ErrorMessage';
+import { ArrowLeft } from 'lucide-react';
 
 const MovieDetails = ({ 
   isFavourite, 
@@ -11,6 +12,7 @@ const MovieDetails = ({
   removeFromFavourites 
 }) => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { movie, isLoading, error } = useMovieDetails(id);
 
   if (isLoading) {
@@ -55,6 +57,15 @@ const MovieDetails = ({
             style={{ backgroundImage: `url(${movie.backdrop_path})` }}
           >
             <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+            
+            {/* Geri Dönüş Butonu - Arka plan üzerinde */}
+            <button
+              onClick={() => navigate(-1)}
+              className="absolute top-4 left-4 flex items-center gap-2 px-4 py-2 bg-black bg-opacity-70 hover:bg-opacity-90 text-white rounded-lg transition-all duration-300 backdrop-blur-sm"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span>Geri Dön</span>
+            </button>
           </div>
         )}
         

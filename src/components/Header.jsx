@@ -45,15 +45,20 @@ const Header = ({ searchQuery, setSearchQuery }) => { // Props olarak al
 
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center space-x-4">
-            <button className="p-2 text-gray-300 hover:text-red-400 transition-colors">
-              <Search className="w-5 h-5" />
-            </button>
+           
             <button 
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="p-2 text-gray-300 hover:text-red-400 transition-colors"
             >
               {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
+            <Link to="/" className="text-white hover:text-red-400 transition-colors font-medium">
+               <div className="flex items-center space-x-4">
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent">
+              WhatToWatch
+            </h1>
+          </div>
+            </Link>
           </div>
         </div>
 
@@ -61,13 +66,7 @@ const Header = ({ searchQuery, setSearchQuery }) => { // Props olarak al
         {isMenuOpen && (
           <div className="md:hidden border-t border-gray-800">
             <div className="px-2 pt-2 pb-3 space-y-1">
-              <Link
-                to="/"
-                className="block px-3 py-2 text-white hover:text-red-400 transition-colors font-medium"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Main Page
-              </Link>
+              
               <Link
                 to="/favourites"
                 className="block px-3 py-2 text-gray-300 hover:text-red-400 transition-colors font-medium"
