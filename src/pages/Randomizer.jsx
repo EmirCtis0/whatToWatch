@@ -40,7 +40,10 @@ function Randomizer({ movies, addToFavourites, removeFromFavourites, isFavourite
 
       {/* Random movie display */}
       {randomMovie && (
-        <div className="mb-6 p-4 bg-gray-800 rounded-xl shadow-lg border border-gray-700">
+          <div 
+          className="mb-6 p-4 bg-gray-800 rounded-xl shadow-lg border border-gray-700 cursor-pointer hover:bg-gray-750 transition-colors"
+          onClick={() => navigate(`/movie/${randomMovie.id}`)}
+        >
           <div className="flex items-center space-x-4">
             {randomMovie.poster && (
               <img
@@ -54,6 +57,7 @@ function Randomizer({ movies, addToFavourites, removeFromFavourites, isFavourite
               <h3 className="text-lg font-semibold">{randomMovie.title}</h3>
               <p className="text-gray-400">Year: {randomMovie.year}</p>
               <p className="text-yellow-400">⭐ {randomMovie.rating?.toFixed(1)}</p>
+              <p className="text-blue-400 text-sm mt-2">👆 Click to view details</p>
             </div>
           </div>
         </div>
